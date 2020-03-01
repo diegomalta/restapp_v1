@@ -5,11 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using restapp.Domain.Security;
+using restapp.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace restapp.Api
 {
@@ -25,6 +29,19 @@ namespace restapp.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Identity role
+            services.AddIdentity<RestAppUser, IdentityRole>(cfg =>
+            {
+                cfg.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<SecurityDbContext>();
+
+            //admin Context
+            services.AddDbContext<SecurityDbContext>(cfg =>
+            {
+                cfg.UseSqlServer(Configuration.GetConnectionString("AdminDBConnection"));
+            });
+
             services.AddControllers();
         }
 
