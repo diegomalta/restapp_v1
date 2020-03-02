@@ -1,17 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using restapp.Data.Mapping;
 using restapp.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace restapp.Data
 {
-    public class RestappDbContext : DbContext
+    public class RestAppDbContext : DbContext
     {
-        public RestappDbContext(DbContextOptions<RestappDbContext> options) : base (options)
+        public RestAppDbContext(DbContextOptions<RestAppDbContext> options) : base(options)
         {
 
         }
