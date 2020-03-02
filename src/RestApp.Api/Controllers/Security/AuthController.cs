@@ -1,29 +1,35 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using restapp.Domain.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using RestApp.Domain.Model;
+using RestApp.Domain.Services;
 using System.Threading.Tasks;
 
 namespace RestApp.Api.Controllers.Security
 {
     [ApiController]
-    [Route("[api/security/controller]")]
-    public class AuthController
+    [Route("api/security/[controller]")]
+    public class AuthController : ControllerBase
     {
-        private readonly SignInManager<RestAppUser> _signInManager;
-        private readonly UserManager<RestAppUser> _userManager;
-        private readonly IConfiguration _config;
+        private readonly IAuthService _authService;
 
-        public AuthController(SignInManager<RestAppUser> signInManager, UserManager<RestAppUser> userManager, IConfiguration config)
+        public AuthController(IAuthService authService)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _config = config;
+            _authService = authService;
         }
 
+        [HttpGet]
+        [Route("v1/GenerateToken")]
+        public async Task<IActionResult> GenerateToken([FromBody] TokenRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _authService.GenerateToken(request);
+                if (result.IsSuccess)
+                {
+                    return StatusCode(StatusCodes.Status200OK, result);
+                }
+            }
+            return StatusCode(StatusCodes.Status400BadRequest, "Invalid Request");
+        }
     }
 }
