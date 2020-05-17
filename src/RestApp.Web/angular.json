@@ -5,7 +5,11 @@
   "projects": {
     "RestApp-Web": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -25,7 +29,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -90,7 +94,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -125,6 +129,6 @@
   },
   "defaultProject": "RestApp-Web",
   "cli": {
-    "analytics": "e030acfd-4296-471f-a22f-8c82a6edc308"
+    "analytics": "9841bb01-443a-4046-9d08-3181228c27bf"
   }
 }

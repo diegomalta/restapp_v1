@@ -31,10 +31,21 @@ namespace restapp.Api
         }
 
         public IConfiguration Configuration { get; }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Configure CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                    bulder =>
+                    {
+                        bulder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+                    });
+            });
+
             // Identity role
             services.AddIdentity<RestAppUser, IdentityRole>(cfg =>
             {
@@ -80,6 +91,8 @@ namespace restapp.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
