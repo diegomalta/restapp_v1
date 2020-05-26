@@ -20,6 +20,10 @@ using System.Text;
 using RestApp.Domain.Services;
 using RestApp.Api.Services;
 using RestApp.Data;
+using RestApp.Domain.Queries.Reports;
+using RestApp.Data.Queries.Reports;
+using RestApp.Domain.Queries.Admin;
+using RestApp.Data.Queries.Admin;
 
 namespace restapp.Api
 {
@@ -53,17 +57,31 @@ namespace restapp.Api
             })
             .AddEntityFrameworkStores<SecurityDbContext>();
 
-            // Admin Context
+            // User Admin Context
             services.AddDbContext<SecurityDbContext>(cfg =>
             {
                 cfg.UseSqlServer(Configuration.GetConnectionString("AdminDBConnection"));
             });
 
+            // kilaDbConnection Context
+            services.AddDbContext<RestAppDbContext>(cfg =>
+            {
+                cfg.UseSqlServer(Configuration.GetConnectionString("kilaDbConnection"));
+            });
+
             // seeder
             services.AddTransient<SecuritySeeder>();
 
-            // Services
-            services.AddScoped<IAnalyticsService, AnalyticsService>();
+            /** Services **/
+            // reports
+            services.AddScoped<IReportsQuery, ReportsQuery>();
+            services.AddScoped<IReportsService, ReportsService>();
+
+            // Admin
+            services.AddScoped<IProductsQuery, ProductsQuery>();
+            services.AddScoped<IAdminService, AdminService>();            
+
+            // Auth
             services.AddScoped<IAuthService, AuthService>();
 
             // Auth

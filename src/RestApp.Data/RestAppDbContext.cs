@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using restapp.Data.Mapping;
 using restapp.Domain.Model;
+using RestApp.Domain.Model.Queries;
 
 namespace restapp.Data
 {
@@ -11,11 +12,18 @@ namespace restapp.Data
 
         }
 
-        DbSet<Product> Products { get; set; }
+        // Entities
+        public DbSet<Product> Products { get; set; }
+
+        // Queries
+        public DbSet<DailyReport> DailyReport { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ProductMapping());
+
+            // Queries
+            modelBuilder.Entity<DailyReport>().HasNoKey();
         }
     }
 }
