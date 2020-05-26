@@ -16,6 +16,7 @@ using restapp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 using RestApp.Domain.Services;
 using RestApp.Api.Services;
@@ -95,6 +96,12 @@ namespace restapp.Api
                     };
                 });
 
+            // Register the Swagger generator
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestApp API", Version = "v1" });
+            });
+
             services.AddControllers();
         }
 
@@ -105,6 +112,14 @@ namespace restapp.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Swagger registration
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My RestApp API V1");
+            });
+
 
             app.UseHttpsRedirection();
 
