@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
-import { throwError, Observable } from 'rxjs';
+import { throwError, Observable, BehaviorSubject } from 'rxjs';
 
 const DOMAIN_URL = 'http://localhost:41219';
 const BASE_URL = 'api/security/Auth';
@@ -12,8 +12,11 @@ const GETTOKEN = 'v1/GenerateToken';
 })
 export class AuthService {
 
-  TOKEN_KEY = 'token'
-  TOKEN_EXPIRATION = 'tokenExpiration'
+  TOKEN_KEY = 'token';
+  TOKEN_EXPIRATION = 'tokenExpiration';
+
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  isLoggenInAction$ = this.isLoggedInSubject.asObservable();
 
   constructor(private httpClient: HttpClient) { }
 
@@ -27,10 +30,15 @@ export class AuthService {
         if (response && response.token) {
           localStorage.setItem(this.TOKEN_KEY, response.token);
           localStorage.setItem(this.TOKEN_EXPIRATION, response.expiration);
+          return true;
         }
         return false;
       }, catchError(this.handleError))
     );
+  }
+
+  public updateIsAuthenticated(): void {
+    this.isLoggedInSubject.next(this.isAuthenticated());
   }
 
   public isAuthenticated(): boolean {
@@ -42,8 +50,7 @@ export class AuthService {
 
   private SetHeaders(): HttpHeaders {
     return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': '*/*'
+      'Content-Type': 'application/json'
     });
   }
 

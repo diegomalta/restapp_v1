@@ -14,7 +14,7 @@ export class AdminService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getProducts(): Observable<any[]>{
+  getProducts(): Observable<any[]> {
     const url = `${DOMAIN_URL}/${BASE_URL}/${GETPRODUCTS}`;
 
     return this.httpClient.get<any[]>(url).pipe(
