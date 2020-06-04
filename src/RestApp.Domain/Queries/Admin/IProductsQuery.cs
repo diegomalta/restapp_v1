@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestApp.Domain.Services
+namespace RestApp.Domain.Queries.Admin
 {
-    public interface IAnalyticsService
+    public interface IProductsQuery
     {
         
     }

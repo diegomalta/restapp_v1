@@ -17,7 +17,7 @@ namespace RestApp.Api.Controllers.Security
             _authService = authService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("v1/GenerateToken")]
         public async Task<IActionResult> GenerateToken([FromBody] TokenRequest request)
         {

@@ -16,10 +16,15 @@ using restapp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 using RestApp.Domain.Services;
 using RestApp.Api.Services;
 using RestApp.Data;
+using RestApp.Domain.Queries.Reports;
+using RestApp.Data.Queries.Reports;
+using RestApp.Domain.Queries.Admin;
+using RestApp.Data.Queries.Admin;
 
 namespace restapp.Api
 {
@@ -31,10 +36,21 @@ namespace restapp.Api
         }
 
         public IConfiguration Configuration { get; }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Configure CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                    bulder =>
+                    {
+                        bulder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+                    });
+            });
+
             // Identity role
             services.AddIdentity<RestAppUser, IdentityRole>(cfg =>
             {
@@ -42,17 +58,31 @@ namespace restapp.Api
             })
             .AddEntityFrameworkStores<SecurityDbContext>();
 
-            // Admin Context
+            // User Admin Context
             services.AddDbContext<SecurityDbContext>(cfg =>
             {
                 cfg.UseSqlServer(Configuration.GetConnectionString("AdminDBConnection"));
             });
 
+            // kilaDbConnection Context
+            services.AddDbContext<RestAppDbContext>(cfg =>
+            {
+                cfg.UseSqlServer(Configuration.GetConnectionString("kilaDbConnection"));
+            });
+
             // seeder
             services.AddTransient<SecuritySeeder>();
 
-            // Services
-            services.AddScoped<IAnalyticsService, AnalyticsService>();
+            /** Services **/
+            // reports
+            services.AddScoped<IReportsQuery, ReportsQuery>();
+            services.AddScoped<IReportsService, ReportsService>();
+
+            // Admin
+            services.AddScoped<IProductsQuery, ProductsQuery>();
+            services.AddScoped<IAdminService, AdminService>();            
+
+            // Auth
             services.AddScoped<IAuthService, AuthService>();
 
             // Auth
@@ -66,6 +96,12 @@ namespace restapp.Api
                     };
                 });
 
+            // Register the Swagger generator
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestApp API", Version = "v1" });
+            });
+
             services.AddControllers();
         }
 
@@ -77,9 +113,19 @@ namespace restapp.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            // Swagger registration
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My RestApp API V1");
+            });
+
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
