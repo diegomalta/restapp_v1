@@ -13,9 +13,9 @@ export class NavbarComponent {
   isLoggedIn$: Observable<boolean> = this.authService.isLoggenInAction$.pipe(
     tap(result => console.log(`isLoggedIn: ${result}`))
   );
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Web)
     .pipe(
-      map(result => result.matches),
+      map(result => !result.matches),
       shareReplay()
     );
 
