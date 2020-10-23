@@ -19,7 +19,7 @@ namespace RestApp.Api.Controllers.Reports
         }
 
         [HttpGet]        
-        [Route("v1/GetDailyReport")]        
+        [Route("v1/daily-report")]        
         public async Task<IActionResult> GetDailyReport()
         {
             try

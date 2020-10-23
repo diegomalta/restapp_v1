@@ -9,8 +9,8 @@ namespace RestApp.Api.Controllers.Admin
     public class ProductsController : ControllerBase
     {
         [HttpGet]
-        [Route("v1/GetProducts")]
-        public async Task<IActionResult> GetProducts()
+        [Route("v1/products")]
+        public async Task<IActionResult> Get()
         {
             var ret = new [] {
                 new
