@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { map, catchError } from 'rxjs/operators';
 import { throwError, Observable, BehaviorSubject } from 'rxjs';
 
-const DOMAIN_URL = 'http://localhost:41219';
+const DOMAIN_URL = 'http://localhost:5000';
 const BASE_URL = 'api/security/Auth';
 const GETTOKEN = 'v1/GenerateToken';
 
@@ -46,6 +46,10 @@ export class AuthService {
       localStorage.getItem(this.TOKEN_EXPIRATION) != null &&
       localStorage.getItem(this.TOKEN_KEY).length > 0 &&
       new Date(localStorage.getItem(this.TOKEN_EXPIRATION)) > new Date();
+  }
+
+  public getToken(): string {
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 
   private SetHeaders(): HttpHeaders {

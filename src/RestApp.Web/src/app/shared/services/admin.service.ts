@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-const DOMAIN_URL = 'http://localhost:41219';
+const DOMAIN_URL = 'http://localhost:5000';
 const BASE_URL = 'api/admin/products';
 const GETPRODUCTS = 'v1/GetProducts';
 
