@@ -11,13 +11,12 @@ import { MaterialModule } from './shared/material.module';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { LoginComponent } from './login/login.component';
 
 /* Feature Modules */
-import { UserModule } from './user/user.module';
 import { HomeModule } from './home/home.module';
 
 // services
-import { AdminService } from './shared/services/admin.service';
 import { AuthInterceptorService } from './shared/services/auth.interceptor.service';
 
 
@@ -26,10 +25,10 @@ import { AuthInterceptorService } from './shared/services/auth.interceptor.servi
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    NavbarComponent
+    NavbarComponent,
+    LoginComponent
   ],
   imports: [
-    UserModule,
     HomeModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -39,7 +38,7 @@ import { AuthInterceptorService } from './shared/services/auth.interceptor.servi
     LayoutModule,
     AppRoutingModule,
   ],
-  providers: [AdminService,
+  providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
