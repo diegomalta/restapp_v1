@@ -8,16 +8,19 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './shared/material.module';
 
-import { AppComponent } from './app.component';
-import { PageNotFoundComponent } from './page-not-found.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { LoginComponent } from './login/login.component';
+// services
+import { AuthInterceptorService } from './shared/services/auth.interceptor.service';
 
 /* Feature Modules */
 import { HomeModule } from './home/home.module';
 
-// services
-import { AuthInterceptorService } from './shared/services/auth.interceptor.service';
+import { AppComponent } from './app.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { DailyCardComponent } from './dashboard/daily-card/daily-card.component';
+import { CategoryCardComponent } from './dashboard/category-card/category-card.component';
 
 
 
@@ -26,7 +29,10 @@ import { AuthInterceptorService } from './shared/services/auth.interceptor.servi
     AppComponent,
     PageNotFoundComponent,
     NavbarComponent,
-    LoginComponent
+    LoginComponent,
+    DashboardComponent,
+    DailyCardComponent,
+    CategoryCardComponent
   ],
   imports: [
     HomeModule,
